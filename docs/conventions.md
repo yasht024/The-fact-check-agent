@@ -68,8 +68,9 @@ Use React for the interface, FastAPI for HTTP requests, PostgreSQL for the queue
 - Only a completed initial and follow-up search can establish lack of credible support. A material retrieval failure or unresolved source conflict prevents that outcome. Preserve correctly dated historical claims when newer releases differ.
 - Keep provider calls off the event loop and outside database transactions. Require the current unexpired lease after locking the run row for each write. Preserve completed findings when the processing deadline closes pending checks.
 
-- Translate provider-neutral source-domain hints into the search provider's documented filter parameters. Target a recognized primary publisher initially and broaden weak-evidence follow-up; never waive material-source failures to obtain a verdict.
-- Normalize equivalent calendar-year labels, but do not collapse fiscal periods into calendar periods. Relative latest/current qualifiers still require a source-backed replacement period.
+- Translate provider-neutral source-domain hints into the search provider's documented filter parameters. Target a recognized primary publisher initially and broaden weak-evidence follow-up. Retain failed candidates, but allow independently retrieved and validated citations to establish support, correction, or refutation. Candidate failures still prevent a verdict based on absence of support; search-provider failures and unresolved conflicts remain incomplete.
+- Normalize equivalent calendar-year labels, but do not collapse fiscal periods into calendar periods. A source day within the named month can establish a month-specific claim; a different month or year cannot. Relative latest/current qualifiers still require a source-backed replacement period.
+- Validate small spelled-out counts from zero through twenty against numeric corrections with the same adjacent source unit. The correction quote must still occur in the retrieved passage.
 
 ### Phase 10 interface contracts
 

@@ -89,6 +89,41 @@ class AssessmentTests(unittest.TestCase):
             self.assertEqual(result.status, "incomplete")
             self.assertIsNone(result.verdict)
 
+    def test_failed_candidate_does_not_veto_retrieved_support_or_correction(self):
+        context = a.SearchContext(True, True, 'material_source_unavailable')
+        self.assertEqual(self.assess(answer(), context=context).verdict, 'verified')
+        correction = {'text': 'In 2024, solar energy production was 48 TWh.', 'value': '48', 'unit': 'TWh',
+                      'reporting_period': '2024', 'evidence_id': 'e1'}
+        result = self.assess(answer('corrects', correction=correction), context=context,
+                             evidence={'e1': source(correction['text'])})
+        self.assertEqual(result.verdict, 'inaccurate')
+        for response in (answer('unsupported'), answer('unsupported', [])):
+            self.assertEqual(self.assess(response, context=context).reason, 'material_source_unavailable')
+        self.assertIsNone(self.assess(answer('unresolved'), context=context).verdict)
+
+    def test_month_period_matches_source_day_without_accepting_other_month_or_year(self):
+        claim = fixture_claim().model_copy(update={'qualifiers': fixture_claim().qualifiers.model_copy(
+            update={'reporting_period': 'July 1969'})})
+        for passage in ('Apollo 11 landed on July 20, 1969.', 'Apollo 11 landed on 20 July 1969.',
+                        'The landing date was 1969-07-20.'):
+            self.assertEqual(self.assess(answer(), claim=claim,
+                evidence={'e1': source(passage, None)}).verdict, 'verified')
+        for passage in ('The landing was in June 1969.', 'The landing was on July 20, 1970.',
+                        'July launches were discussed. The landing was in 1969.'):
+            self.assertEqual(self.assess(answer(), claim=claim,
+                evidence={'e1': source(passage, None)}).reason, 'reporting_period_mismatch')
+
+    def test_spelled_out_count_supports_numeric_correction_with_adjacent_unit(self):
+        claim = fixture_claim().model_copy(update={'check_target': 'Mars has three moons.',
+            'qualifiers': fixture_claim().qualifiers.model_copy(update={'reporting_period': None})})
+        correction = {'text': 'Mars has two moons, Phobos and Deimos.', 'value': '2', 'unit': 'moons',
+                      'reporting_period': None, 'evidence_id': 'e1'}
+        self.assertEqual(self.assess(answer('corrects', correction=correction), claim=claim,
+            evidence={'e1': source(correction['text'], None)}).verdict, 'inaccurate')
+        for value, unit in (('3', 'moons'), ('2', 'planets'), ('20', 'moons')):
+            self.assertIsNone(self.assess(answer('corrects', correction={**correction, 'value': value, 'unit': unit}),
+                claim=claim, evidence={'e1': source(correction['text'], None)}).verdict)
+
     def test_conflict_unknown_id_and_missing_evidence_withheld(self):
         for response in (answer("unresolved"), answer(ids=["foreign-claim-evidence"]), answer(ids=[])):
             result = self.assess(response)

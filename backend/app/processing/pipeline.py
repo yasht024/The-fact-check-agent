@@ -55,7 +55,10 @@ async def _check(database_url, lease, sequence, claim, providers, settings):
                     continue
                 return incomplete(error.code), evidence, failures
         # Primary publisher candidates rank first; cap material retrieval to three per pass.
-        candidates = sorted(result.candidates, key=lambda item: not urlsplit(item.url).hostname.endswith(('.gov', '.int')))
+        candidates = sorted(result.candidates, key=lambda item: (
+            not urlsplit(item.url).hostname.endswith(('.gov', '.int')),
+            urlsplit(item.url).path.casefold().endswith('.pdf'),
+        ))
         candidates = [candidate for candidate in candidates if candidate.url not in seen_urls]
         deferred_urls.update(candidate.url for candidate in candidates[3:])
         for candidate in candidates[:3]:
@@ -69,7 +72,7 @@ async def _check(database_url, lease, sequence, claim, providers, settings):
             except RetrievalError as error:
                 failures.append({'source_url': candidate.url, 'code': error.code})
         context = SearchContext(True, phase == 'follow_up', 'material_source_unavailable' if failures else None)
-        if not evidence or context.failure_code:
+        if not evidence:
             finding = assess_claim(claim, evidence, context)
         else:
             for retry in range(2):

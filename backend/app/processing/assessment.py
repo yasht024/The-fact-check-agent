@@ -172,9 +172,25 @@ def _period_key(period: str) -> str:
 
 def _source_has_period(period: str, evidence: Evidence) -> bool:
     key = _period_key(period)
-    return key == _period_key(evidence.reporting_period or "") or bool(
+    if key == _period_key(evidence.reporting_period or "") or bool(
         re.search(r"(?<!\w)" + re.escape(key) + r"(?!\w)", _normalized(evidence.passage))
+    ):
+        return True
+    # A day within the named month establishes that month. Do not collapse
+    # month-specific claims to a year or use the page publication timestamp.
+    months = 'january february march april may june july august september october november december'.split()
+    match = re.fullmatch(r'(' + '|'.join(months) + r')\s+((?:19|20)\d{2})', key)
+    if not match:
+        return False
+    month, year = match.groups()
+    month_number = months.index(month) + 1
+    day = r'(?:[1-9]|[12]\d|3[01])(?:st|nd|rd|th)?'
+    patterns = (
+        rf'\b{month}\s+{day},?\s+{year}\b',
+        rf'\b{day}\s+{month}\s+{year}\b',
+        rf'\b{year}-{month_number:02d}-(?:0[1-9]|[12]\d|3[01])\b',
     )
+    return any(re.search(pattern, evidence.passage, re.I) for pattern in patterns)
 
 
 def _number(text: str) -> Decimal | None:
@@ -189,12 +205,14 @@ def _correction_supported(correction: Correction, evidence: Evidence, claim: Cla
         return False
     if correction.value is not None:
         value = _number(correction.value)
-        numbers = list(re.finditer(r"(?<![\w.])-?\d[\d,]*(?:\.\d+)?(?![\w.])", correction.text))
+        words = 'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty'.split()
+        word_values = {word: Decimal(index) for index, word in enumerate(words)}
+        numbers = list(re.finditer(r"(?<![\w.])(?:-?\d[\d,]*(?:\.\d+)?|" + '|'.join(words) + r")(?![\w.])", correction.text, re.I))
         if value is None or not correction.unit:
             return False
         unit = re.escape(_normalized(correction.unit))
         # The value and unit must form one quantity, not unrelated tokens (e.g. a year).
-        if not any(_number(match.group()) == value and (
+        if not any(word_values.get(match.group().casefold(), _number(match.group())) == value and (
             re.match(r"\s*" + unit + r"(?!\w)", _normalized(correction.text[match.end():]))
             or re.search(r"(?<!\w)" + unit + r"\s*$", _normalized(correction.text[:match.start()]))
         ) for match in numbers):
@@ -219,9 +237,14 @@ def _correction_supported(correction: Correction, evidence: Evidence, claim: Cla
 
 def assess_claim(claim: Claim, evidence: dict[str, Evidence], context: SearchContext,
                  *, provider=request_assessment) -> Finding:
-    if context.failure_code or not context.initial_completed:
+    # Failed candidate retrieval is not evidence against an independently cited
+    # fact. It still prevents a no-support verdict, which requires complete search.
+    candidate_failure = context.failure_code == 'material_source_unavailable'
+    if (context.failure_code and not candidate_failure) or not context.initial_completed:
         return incomplete(context.failure_code or "search_incomplete")
     if not evidence:
+        if candidate_failure:
+            return incomplete(context.failure_code)
         if context.follow_up_completed:
             return Finding("completed", "false", "The completed initial and follow-up searches found no credible support.")
         return incomplete("follow_up_required")
@@ -237,6 +260,8 @@ def assess_claim(claim: Claim, evidence: dict[str, Evidence], context: SearchCon
     if assessment.outcome == "unresolved":
         return incomplete("evidence_unresolved")
     if assessment.outcome == "unsupported":
+        if candidate_failure:
+            return incomplete(context.failure_code)
         if context.follow_up_completed:
             return Finding("completed", "false", "The completed initial and follow-up searches found no credible support.")
         return incomplete("follow_up_required")

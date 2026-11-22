@@ -164,6 +164,36 @@ class PipelinePostgresTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(report['claims'][0]['reason'], 'material_source_unavailable')
         self.assertEqual(report['claims'][0]['source_failures'][0]['code'], 'source_unavailable')
 
+    async def test_blocked_candidate_keeps_failure_but_does_not_hide_cited_finding(self):
+        await self.upload()
+        blocked = Candidate('https://blocked.example/report', 'Blocked candidate')
+        good = Candidate('https://public.example/report', 'Public report')
+        def retrieve(candidate, claim):
+            if candidate == blocked:
+                raise RetrievalError('source_unavailable')
+            return self.retrieve(candidate, claim)
+        await worker.process_one(self.database_url, providers=replace(self.providers,
+            search=lambda query: SearchResult(query, (blocked, good)), retrieve=retrieve))
+        finding = (await self.report()).json()['claims'][0]
+        self.assertEqual(finding['verdict'], 'verified')
+        self.assertTrue(finding['evidence'])
+        self.assertEqual(finding['source_failures'], [{'source_url': blocked.url, 'code': 'source_unavailable'}])
+
+    async def test_partial_retrieval_cannot_establish_absence_of_support(self):
+        await self.upload()
+        def retrieve(candidate, claim):
+            if candidate.url.startswith('https://blocked.'):
+                raise RetrievalError('source_unavailable')
+            return self.retrieve(candidate, claim)
+        providers = replace(self.providers,
+            search=lambda query: SearchResult(query, (Candidate('https://blocked.example/report', 'Blocked'),
+                Candidate('https://public.example/report', 'Report'))), retrieve=retrieve,
+            assess=lambda c, e, context: assess_claim(c, e, context, provider=lambda c, e: answer('unsupported', [])))
+        await worker.process_one(self.database_url, providers=providers)
+        finding = (await self.report()).json()['claims'][0]
+        self.assertIsNone(finding['verdict'])
+        self.assertEqual(finding['reason'], 'material_source_unavailable')
+
     async def test_deadline_preserves_committed_results(self):
         self.claims.append(fixture_claim().model_copy(update={'check_target': 'Second solar production check'}))
         await self.upload()
