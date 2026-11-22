@@ -120,13 +120,13 @@ async def submit_run(
     return {"run_id": str(run_id), "access_token": access_token}
 
 
-@router.get("/{run_id}", response_model=dict[str, str])
+@router.get("/{run_id}", response_model=None)
 async def read_report(
     run_id: str,
     response: Response,
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(report_token)],
     settings: Annotated[Settings, Depends(Settings.from_env)],
-) -> dict[str, str] | JSONResponse:
+) -> dict | JSONResponse:
     if credentials is None:
         return report_unavailable()
     try:
@@ -148,4 +148,11 @@ async def read_report(
         return report_unavailable()
 
     response.headers.update(NO_STORE_HEADERS)
-    return {"run_id": str(run_uuid), "state": state, "stage": stage}
+    try:
+        details = await run_store.get_report_details(settings.database_url, run_uuid)
+    except psycopg.Error as exc:
+        logger.error("Could not read report %s (SQLSTATE %s)", run_uuid, exc.sqlstate)
+        return database_unavailable()
+    if details is None:
+        return report_unavailable()
+    return {"run_id": str(run_uuid), **details}

@@ -1,0 +1,12 @@
+{
+  "dockerfilePath": "Dockerfile",
+  "preDeployCommand": [
+    "python -m backend.migrate"
+  ],
+  "startCommand": "python -m backend.deploy worker",
+  "restartPolicyType": "ON_FAILURE",
+  "restartPolicyMaxRetries": 5,
+  "numReplicas": 1,
+  "region": "iad",
+  "sleepApplication": false
+}

@@ -105,7 +105,8 @@ class RunPostgresTests(unittest.TestCase):
         cls.addClassCleanup(admin.execute, sql.SQL("DROP SCHEMA {} CASCADE").format(schema))
         cls.database_url = make_conninfo(TEST_DATABASE_URL, options=f"-csearch_path={schema_name}")
         cls.database = cls.enterClassContext(psycopg.connect(cls.database_url, autocommit=True))
-        cls.database.execute(MIGRATION.read_text(encoding="utf-8"))
+        for migration in sorted(MIGRATION.parent.glob("*.sql")):
+            cls.database.execute(migration.read_text(encoding="utf-8"))
 
     def setUp(self) -> None:
         self.client = self.enterContext(TestClient(app))
@@ -134,7 +135,10 @@ class RunPostgresTests(unittest.TestCase):
         report = self.client.get(path, headers={"Authorization": f"Bearer {token}"})
         self.assertEqual(report.status_code, 200)
         self.assertEqual(report.headers["cache-control"], "no-store")
-        self.assertEqual(report.json(), {"run_id": run_id, "state": "queued", "stage": "queued"})
+        self.assertEqual({key: report.json()[key] for key in ("run_id", "state", "stage")},
+                         {"run_id": run_id, "state": "queued", "stage": "queued"})
+        self.assertEqual(report.json()["claims"], [])
+        self.assertEqual(report.json()["progress"], {"total": 0, "checked": 0})
         other_run = self.upload()
         self.assertEqual(other_run.status_code, 202)
         other_token = other_run.json()["access_token"]

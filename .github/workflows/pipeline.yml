@@ -1,0 +1,62 @@
+name: Application acceptance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: factcheck_test
+          POSTGRES_USER: factcheck
+          POSTGRES_PASSWORD: pipeline_test_password
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U factcheck -d factcheck_test"
+          --health-interval 3s
+          --health-timeout 5s
+          --health-retries 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Run all backend acceptance tests
+        env:
+          TEST_DATABASE_URL: postgresql://factcheck:pipeline_test_password@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/factcheck_test
+        run: python -m unittest discover -s backend/tests -t . -v
+
+  frontend:
+    name: Frontend build and API contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Install pinned pnpm
+        run: npm install --global pnpm@10.24.0
+      - name: Install frontend dependencies
+        run: pnpm --dir frontend install --frozen-lockfile
+      - name: Test API client
+        run: pnpm --dir frontend test
+      - name: Test deployment output
+        run: node --test scripts/build-vercel.test.mjs
+      - name: Build React
+        run: pnpm --dir frontend build

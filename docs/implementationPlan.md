@@ -40,7 +40,7 @@ This roadmap builds the app described in the [problem statement](problem%20state
 ## Phase 6. Search for Sources
 
 - Build search queries from the claim and its qualifiers. Prepare a follow-up query around the underlying fact, with a likely primary publisher where identifiable, for cases where the first pass gives weak evidence.
-- Connect the Brave Search API. Return candidate source URLs and distinguish a successful empty result from a timeout, rate limit, or credential error.
+- Connect the Tavily Search API. Return candidate source URLs and distinguish a successful empty result from a timeout, rate limit, or credential error.
 
 **Done when** simulated responses exercise each search outcome and a live request for a known public report returns candidate source URLs. This phase uses a prewritten claim and runs independently of PDF extraction.
 
@@ -53,7 +53,7 @@ This roadmap builds the app described in the [problem statement](problem%20state
 
 ## Phase 8. Apply Verdicts and Validate Corrections
 
-- Compare the claim with the retrieved excerpts using structured model output. Check that every cited evidence ID belongs to the claim and build links from stored URLs. Check the value, unit, and period of numeric corrections against the cited excerpt where they can be parsed reliably.
+- Compare the claim with the retrieved excerpts using Gemini structured output and the same key/model as claim extraction. Check that every cited evidence ID belongs to the claim and build links from stored URLs. Check the value, unit, and period of numeric corrections against the cited excerpt where they can be parsed reliably.
 - Apply the three verdicts in the architecture. Distinguish a completed search with no credible support from an interrupted search, inaccessible material evidence, or an unresolved source conflict. Leave the verdict empty for incomplete checks.
 
 **Done when** fixed claims, evidence, and simulated assessments pass the following cases without live providers.
@@ -67,12 +67,16 @@ This roadmap builds the app described in the [problem statement](problem%20state
 | A search times out or relevant sources leave a conflict unresolved. | Incomplete check with an explanation and an empty verdict. |
 | An assessment provides an unknown evidence ID or unsupported correction. | The invalid link or correction is withheld. |
 
+**Implementation status (November 23, 2026):** Phase 8 uses Gemini for assessment and extraction. The full 101-test automated suite and separate local live two-claim check passed; see the latest evaluation sections. See `docs/evals.md` for checks and limitations.
+
 ## Phase 9. Connect the Worker and Save Results
 
 - Connect PDF parsing, claim extraction, initial and follow-up searches, evidence retrieval, and verdict assignment. Migrate the `claims`, `claim_checks`, and `evidence` tables, then save each result and its evidence together.
 - Delete the staged PDF after claim extraction commits or ends in a terminal failure. Update progress from saved checks, enforce the processing deadline and usage limits, and clean up expired reports. Log processing stages and provider errors without recording document contents, queries, or access tokens.
 
 **Done when** an API test uploads a known PDF and receives a saved report with simulated providers. Force one claim to fail and confirm that completed claims remain visible. Restart the worker mid-run to check that saved verdicts survive without duplicate rows. Verify upload cleanup and report expiry using short test deadlines.
+
+**Implementation status (November 23, 2026):** Phase 9 implemented and verified against real local PostgreSQL with simulated providers, including recovery, PDF cleanup, deadlines, and expiry. The separate local live Gemini/Tavily pipeline check also passed with a Verified historical claim and an Inaccurate outdated figure with a source-backed 2025 correction. Hosted PostgreSQL 17 execution remains unrun; work stops at local Phase 9 verification.
 
 ## Phase 10. Build the Upload and Report Interface
 
@@ -82,12 +86,16 @@ This roadmap builds the app described in the [problem statement](problem%20state
 
 **Done when** a browser can upload a test PDF, reload during processing, and reach the finished report in the same tab. Use known API responses to check each error and report state independently of live providers. Compare the upload, progress, and report views with the chosen Stitch designs at desktop and mobile widths, verify keyboard use of the upload form, and confirm that source links open the cited pages.
 
+**Implementation status (November 23, 2026):** Phase 10 implemented and locally verified. The supplied Proofline exports are in `docs/Design/stitch_fact_checking_web_app/`. Native Chrome checks covered keyboard upload, desktop/mobile views, same-tab refresh while queued and checking, real-provider processing to a finished report, and opening its citation. Known responses covered empty, incomplete, unreadable, unavailable, and transient-error reports. The live report finished with one Inaccurate correction and one source-retrieval gap. See `docs/evals.md` for exact local results. Phase 11 was subsequently started at the user’s request.
+
 ## Phase 11. Deploy and Check the Live App
 
-- Deploy the FastAPI web service, worker, and PostgreSQL to Render from the GitHub repository. Apply migrations, set production credentials, and confirm that the worker can reach the database and both providers.
+- Deploy FastAPI, the separate Python worker, and PostgreSQL to Railway; deploy the React frontend to Vercel with same-origin API forwarding to Railway. This user-selected split replaces the original Render plan. Use the same reviewed source for both Railway services, apply migrations 001–003, set production credentials, and confirm database/provider access.
 - Check service health, worker activity, and available provider quota. Run one full check through the public URL with live search and model calls.
 
 **Done when** a fresh browser session can open the public URL, upload a PDF without an account, and receive a finished report with at least one source link. Confirm that the cited page supports the report and that the app remains reachable for the review window.
+
+**Current status (November 23, 2026):** Deployed through authenticated CLIs: React at `https://proofline-omega-nine.vercel.app`, API at `https://api-production-7966543a.up.railway.app`, with a separate Railway worker and PostgreSQL 18 template. Migrations 001–003 and public health/config routes passed. A small public PDF completed with a Verified NASA finding after fixing validated-address fallback; the actual NASA citation was fetched and confirmed. Fresh-browser UI acceptance remains pending because the user disabled computer use. Large-upload transport tests timed out and remain unresolved. See `docs/evals.md`; Phase 11 is deployed but its full acceptance is not yet complete. Phase 12 has not started.
 
 ## Phase 12. Evaluate and Prepare the Submission
 

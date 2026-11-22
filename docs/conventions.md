@@ -7,14 +7,14 @@ Use this file alongside the [problem statement](problem%20statement.md), [archit
 | Path | Contents |
 | --- | --- |
 | `frontend/src/` | React upload form, progress view, report components, and a shared API client. |
-| `docs/design/` | Stitch project links or screen exports and any exported `DESIGN.md`, added when the designs are ready. |
+| `docs/Design/stitch_fact_checking_web_app/` | Chosen Proofline desktop/mobile Stitch exports and design system used by Phase 10. |
 | `backend/app/` | FastAPI entry point, API schemas, configuration, and data access shared by the web service and worker. |
 | `backend/app/processing/` | Worker and processing logic for PDF parsing, claim extraction, source retrieval, and evidence assessment. |
 | `backend/migrations/` | Ordered PostgreSQL schema changes. |
 | `backend/tests/` | Backend tests and small PDF, source, and provider-response fixtures. |
 | `requirements.txt` and `README.md` | Shared Python dependencies, setup, usage, and deployment instructions. |
 
-Use React for the interface, FastAPI for HTTP requests, PostgreSQL for the queue and reports, and `pypdf` for text extraction. Keep Brave Search and OpenAI calls in the worker-side code. Put each provider's request and response handling in one place so tests can replace the provider with fixed responses.
+Use React for the interface, FastAPI for HTTP requests, PostgreSQL for the queue and reports, and `pypdf` for text extraction. Keep provider calls in the worker-side code, including Gemini for claim extraction and verdict assessment, and Tavily for source discovery. Put each provider's request and response handling in one place so tests can replace the provider with fixed responses.
 
 ## Naming and Data
 
@@ -48,7 +48,7 @@ Use React for the interface, FastAPI for HTTP requests, PostgreSQL for the queue
 - Use the chosen Google Stitch screens as the visual reference. Adapt any exported markup and styles into React components. Drive upload status, progress, and verdicts from API responses.
 - Display claims in document order. Show the original excerpt, page number, verdict or check status, explanation, and any correction and source links. Keep completed findings visible during a temporary polling error. Use text for state labels so they are legible without color.
 - Validate upload limits server-side and display the configured limits on the form. Start with the architecture defaults of 10 MiB and 30 pages per PDF and 24 hours of report access after completion. Explain that the first release supports PDFs with selectable text and show any unreadable pages in the report.
-- Keep credentials in server-side environment variables. Require provider credentials when the worker reaches those stages. Keep report access tokens in browser session storage, send them in the authorization header, and store only their hashes in PostgreSQL.
+- Keep credentials in server-side environment variables. Claim extraction and assessment both read `GEMINI_API_KEY` and the optional `GEMINI_MODEL` from the worker environment. Require provider credentials when the worker reaches those stages. Keep report access tokens in browser session storage, send them in the authorization header, and store only their hashes in PostgreSQL.
 - Log run IDs, stages, durations, and error codes. Exclude PDF contents, search queries, access tokens, and credentials. Render retrieved and uploaded text as plain text. Fetch source URLs only over public HTTP(S), with connection and redirect checks and bounded response sizes and times.
 - Remove the staged PDF after claim extraction commits or extraction ends in a terminal failure. Close abandoned runs and delete expired reports through the worker's cleanup pass.
 
@@ -58,3 +58,30 @@ Use React for the interface, FastAPI for HTTP requests, PostgreSQL for the queue
 - When implementing the Stitch design, compare the running upload, progress, and report views with the chosen designs at desktop and mobile widths. Check that form controls have labels and work with the keyboard.
 - Verify claim handling at the boundary between a completed search with no credible support and an incomplete search. Include a correctly dated historical figure and a current claim with an outdated value when testing corrections.
 - Review changed files, run the relevant regression checks, and record observed edge cases and durable decisions in their project documents. Add libraries or new patterns when the active phase needs them and record decisions that affect later phases.
+
+
+## Pipeline checkpoints and assessment
+
+- Apply all migrations before starting the updated API or default worker. Keep the explicit Phase 3 simulated processor available for queue regression tests.
+- Commit extraction and staged-upload deletion together. Commit a finding and all of its retrieved passages together. Use `(run_id, sequence)` for claim identity, and claim-local evidence IDs. Never replace a committed finding when resuming a run.
+- Reserve provider attempts in PostgreSQL before dispatch. Keep source failures and error codes separate from verdicts. Unknown citations or unsupported corrections make a check incomplete; model-generated URLs are never used as citations.
+- Only a completed initial and follow-up search can establish lack of credible support. A material retrieval failure or unresolved source conflict prevents that outcome. Preserve correctly dated historical claims when newer releases differ.
+- Keep provider calls off the event loop and outside database transactions. Require the current unexpired lease after locking the run row for each write. Preserve completed findings when the processing deadline closes pending checks.
+
+- Translate provider-neutral source-domain hints into the search provider's documented filter parameters. Target a recognized primary publisher initially and broaden weak-evidence follow-up; never waive material-source failures to obtain a verdict.
+- Normalize equivalent calendar-year labels, but do not collapse fiscal periods into calendar periods. Relative latest/current qualifiers still require a source-backed replacement period.
+
+### Phase 10 interface contracts
+
+- Read public limits from `GET /api/config`; it exposes only `max_upload_bytes`, `max_pdf_pages`, and `report_retention_hours`. Keep server PDF parsing authoritative.
+- Store only the active run ID, bearer token, and display filename under `proofline-report` in session storage. Report contents are fetched again after refresh. Never put the token in a URL or local storage.
+- Poll sequentially every two seconds with a 15-second request timeout. Keep the last successful report on transient errors; stop polling on completed, completed-with-gaps, failed, or unavailable responses.
+- The production app never imports the standalone `backend.tests.interface_preview` fixture service. Its responses are for local UI verification only.
+
+
+### Phase 11 deployment contracts
+
+- The current user-selected topology is Railway API + separate worker + PostgreSQL, with React on Vercel. The earlier Render plan is superseded.
+- Use repository-root Docker context and the role-specific files in `deploy/`. Both Railway services run the checksum-ledger migration gate before starting; never mix raw untracked SQL initialization with automatic pre-deploy migrations on the same database.
+- Vercel builds static assets and external `/api/*`/`/healthz` routes from the public `RAILWAY_API_ORIGIN`. Browser API URLs remain relative. No database/provider credentials belong in Vercel frontend variables or build artifacts.
+- `/healthz` is process liveness only. Record database migrations, worker execution, and live public upload/citation checks independently. Do not label a prepared configuration or local test as a deployed pass.

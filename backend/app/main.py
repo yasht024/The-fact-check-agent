@@ -5,6 +5,7 @@ from fastapi.responses import PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.runs import router as runs_router
+from backend.app.config import Settings
 
 
 FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
@@ -15,6 +16,16 @@ app = FastAPI(title="Fact-Checking Web App")
 @app.get("/healthz")
 async def healthz() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/api/config")
+async def public_config() -> dict[str, int]:
+    settings = Settings.from_env()
+    return {
+        "max_upload_bytes": settings.max_upload_bytes,
+        "max_pdf_pages": settings.max_pdf_pages,
+        "report_retention_hours": settings.report_retention_hours,
+    }
 
 
 # Register API routes above the frontend mount, which handles remaining paths.

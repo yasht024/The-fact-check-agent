@@ -1,0 +1,16 @@
+**
+!Dockerfile
+!requirements.txt
+!backend/
+!backend/**
+!frontend/
+!frontend/package.json
+!frontend/pnpm-lock.yaml
+!frontend/index.html
+!frontend/vite.config.js
+!frontend/src/
+!frontend/src/**
+backend/tests/
+**/__pycache__/
+**/*.pyc
+**/.env*

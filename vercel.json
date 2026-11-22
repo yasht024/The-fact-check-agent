@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "cd frontend && corepack pnpm install --frozen-lockfile",
+  "buildCommand": "cd frontend && corepack pnpm run build && node ../scripts/build-vercel.mjs"
+}
