@@ -195,7 +195,9 @@ cd ..
 node --test scripts/build-vercel.test.mjs
 ```
 
-The latest local and [GitHub Actions verification](https://github.com/yasht024/The-fact-check-agent/actions/runs/45072968405) passed **110 backend tests and seven frontend/deployment tests**. Coverage includes upload validation, lease recovery, atomic persistence, PDF failure states, excerpt validation, search failures, source-address/TLS protections, verdict/correction rules, migrations, and deployment routing. GitHub Actions runs the backend suite against PostgreSQL 17; frontend checks run separately in the application workflow.
+The latest local and [GitHub Actions verification](https://github.com/yasht024/The-fact-check-agent/actions/runs/45073500434) passed **115 backend tests and seven frontend/deployment tests**. Coverage includes upload validation, lease recovery, atomic persistence, PDF failure states, excerpt validation, search failures, source-address/TLS protections, verdict/correction rules, migrations, and deployment routing. New regressions cover failed source candidates alongside usable evidence, historical month matching, and corrections from spelled-out counts. GitHub Actions runs the backend suite against PostgreSQL 17; frontend checks run separately in the application workflow.
+
+The deployed science sample completed all three checks with citations: Earth's diameter Verified, Mars's moon count Inaccurate with a correction to two moons, and Apollo 11's July 1969 landing Verified. A failed candidate no longer vetoes independently retrieved evidence; it still prevents a conclusion based on absence of support. Existing saved reports are unchanged, so upload again to run the updated checker.
 
 Live-provider checks are deliberately opt-in. For example:
 
