@@ -10,8 +10,11 @@
 | 2 | An oversized request arrives in chunks without a `Content-Length` header. | Enforce the body limit while reading the stream and return `413 upload_too_large`. |
 | 2 | A request uses no token, a wrong token, or the token for a different run. | Return the same `404 report_unavailable` response. |
 | 2 | PostgreSQL rejects the upload insert after the run insert. | Return `503 database_unavailable`. The failed run ID has no row in either table. |
+| 3 | Two workers claim the same queued run. | Only one receives a lease. A worker skips rows locked by another transaction. |
+| 3 | A worker resumes after the lease expires or a replacement takes ownership. | Reject its checkpoint, completion, and retry writes. The replacement continues from the saved stage. |
+| 3 | An interruption consumes the final attempt. | When its lease expires, record `attempts_exhausted` and close the run. |
 
-Run the corresponding [Phase 2 acceptance checks](evals.md#phase-2-accept-and-store-a-pdf).
+Run the corresponding [Phase 2 acceptance checks](evals.md#phase-2-accept-and-store-a-pdf) or [Phase 3 acceptance checks](evals.md#phase-3-pick-up-and-recover-jobs).
 
 ## Discovered During Build
 

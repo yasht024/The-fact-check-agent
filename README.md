@@ -1,6 +1,6 @@
 # Fact-Checking Web App
 
-The React frontend is served by FastAPI. The Phase 2 API accepts PDFs, queues runs in PostgreSQL, and serves run status to clients with the run’s access token. The Python worker is a configuration check until job processing is added.
+The React frontend is served by FastAPI. The API accepts PDFs, queues runs in PostgreSQL, and serves run status to clients with the run’s access token. The Phase 3 worker uses a simulated processor to exercise queue ownership and recovery.
 
 ## Frontend design
 
@@ -32,7 +32,7 @@ Keep that terminal running and wait for `Uvicorn running on http://127.0.0.1:800
 
 For frontend-only development, run `npm --prefix frontend run dev` and open the URL printed by Vite. Build again to see frontend changes through FastAPI. If the initial build was missing when FastAPI started, restart the service after building.
 
-To run the worker entry point, activate the same virtual environment and run the following from the workspace root. The worker validates its environment settings, prints a startup message, and exits.
+To run the worker, activate the same virtual environment, start PostgreSQL, and set `DATABASE_URL`. Run the command below from the workspace root. The worker polls for queued runs and uses a simulated processor to save a checkpoint and complete each run. With `DATABASE_URL` unset, the command checks the environment settings and exits.
 
 ```sh
 python -m backend.app.processing.worker
@@ -40,7 +40,7 @@ python -m backend.app.processing.worker
 
 ## Environment variables
 
-Set these variables in the shell that starts the service or worker. The upload and report routes use `DATABASE_URL`. The React page, health endpoint, and worker startup check work without a database. Phase 2 requires no provider credentials.
+Set these variables in the shell that starts the service or worker. The upload and report routes and worker queue use `DATABASE_URL`. The React page, health endpoint, and worker startup check work without a database. The simulated processor requires no provider credentials.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -83,10 +83,19 @@ export DATABASE_URL='postgresql://factcheck:factcheck_dev@127.0.0.1:55432/factch
 
 Run FastAPI from the shell with `DATABASE_URL` set. Use `docker compose stop postgres` to stop the database and keep its data.
 
-If you already have a local PostgreSQL database, set `DATABASE_URL` to its connection URL and apply the migration once before starting FastAPI.
+For a fresh PostgreSQL database outside Compose, set `DATABASE_URL` and apply both migrations in order.
 
 ```sh
-psql -X "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/migrations/001_runs_and_uploads.sql
+psql -X "$DATABASE_URL" -v ON_ERROR_STOP=1 \
+  -f backend/migrations/001_runs_and_uploads.sql \
+  -f backend/migrations/002_worker_leases.sql
+```
+
+For a Phase 2 database, apply only `002_worker_leases.sql` once before starting the worker. For an existing Compose volume, run the migration through the container.
+
+```sh
+docker compose exec -T postgres psql -X -v ON_ERROR_STOP=1 -U factcheck -d factcheck \
+  < backend/migrations/002_worker_leases.sql
 ```
 
 ## Phase 2 API and acceptance checks
@@ -119,3 +128,9 @@ See [Phase 2 acceptance checks](docs/evals.md#phase-2-accept-and-store-a-pdf) fo
 4. Open **Actions** → **Phase 2 acceptance tests** → the run for your push → **PostgreSQL acceptance** → **Run Phase 2 tests**. A passing run shows `Ran 6 tests` and `OK` with zero skips. [GitHub’s guide to workflow logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs)
 
 The [workflow](.github/workflows/phase-2.yml) uses Python 3.12 and a fresh PostgreSQL 17 service on a GitHub-hosted Ubuntu runner. It sets `TEST_DATABASE_URL` from that service’s assigned port. The test database needs no GitHub secrets.
+
+## Phase 3 worker and recovery
+
+Each claim has a 30-second lease that renews every 10 seconds while the worker is processing. A replacement can reclaim an expired run and continue from the saved checkpoint. Recovery counts toward the three-attempt budget. Retryable errors wait 5 seconds before the second attempt and 10 seconds before the final attempt. The simulated processor leaves the uploaded PDF available for the extraction phase.
+
+See the [Phase 3 acceptance checks](docs/evals.md#phase-3-pick-up-and-recover-jobs) for the PostgreSQL tests and their verification status.
