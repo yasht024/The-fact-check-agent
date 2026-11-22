@@ -195,7 +195,7 @@ cd ..
 node --test scripts/build-vercel.test.mjs
 ```
 
-The latest local verification passed **110 backend tests and seven frontend/deployment tests**. Coverage includes upload validation, lease recovery, atomic persistence, PDF failure states, excerpt validation, search failures, source-address/TLS protections, verdict/correction rules, migrations, and deployment routing. GitHub Actions runs the backend suite against PostgreSQL 17; frontend checks run separately in the application workflow.
+The latest local and [GitHub Actions verification](https://github.com/yasht024/The-fact-check-agent/actions/runs/45072968405) passed **110 backend tests and seven frontend/deployment tests**. Coverage includes upload validation, lease recovery, atomic persistence, PDF failure states, excerpt validation, search failures, source-address/TLS protections, verdict/correction rules, migrations, and deployment routing. GitHub Actions runs the backend suite against PostgreSQL 17; frontend checks run separately in the application workflow.
 
 Live-provider checks are deliberately opt-in. For example:
 
@@ -231,7 +231,7 @@ Set `RAILWAY_CLI` to the executable path if it is not on PATH. The script uses R
 
 For Vercel, keep the project root at the repository root, Node 24, and the framework preset **Other**. Set `RAILWAY_API_ORIGIN` to the API's public HTTPS origin in Production/Preview build environments. `scripts/build-vercel.mjs` creates static assets and external API/health routes without a Vercel Function. Database/provider credentials stay on Railway.
 
-**GitHub connection:** the intended production branch is `main`. Once the Vercel Git integration is connected, pushes/merges to `main` build the frontend automatically; other branches get previews. The connection status and latest checked commit are recorded in [the publication results](docs/evals.md#github-publication-and-vercel-git-connection). Frontend automation does **not** deploy Railway: API/worker changes still require the Railway commands above. Preview frontends currently use the same Railway API; use a separate backend environment before testing incompatible API or database changes.
+**GitHub connection:** Vercel is connected to `yasht024/The-fact-check-agent`, with `main` confirmed as its production branch and Node 24.x selected. Pushes/merges to `main` build the frontend automatically; other branches get previews. The connection status and latest checked commit are recorded in [the publication results](docs/evals.md#github-publication-and-vercel-git-connection). Frontend automation does **not** deploy Railway: API/worker changes still require the Railway commands above. Preview frontends currently use the same Railway API; use a separate backend environment before testing incompatible API or database changes.
 
 Review changes, run tests, and use a feature branch/PR for future work. A direct production-branch push can publish frontend changes immediately; GitHub Actions results and Vercel deployment status should both be checked.
 
