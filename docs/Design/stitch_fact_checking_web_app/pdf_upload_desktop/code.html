@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Upload — Proofline</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'verified': '#146C43',
+        'on-verified': '#FFFFFF',
+        'verified-container': '#E6F4EA',
+        'on-verified-container': '#0D4A2E',
+        'inaccurate': '#8A5300',
+        'on-inaccurate': '#FFFFFF',
+        'inaccurate-container': '#FFF3CD',
+        'on-inaccurate-container': '#5C3700',
+        'incomplete': '#43474E',
+        'on-incomplete': '#FFFFFF',
+        'incomplete-container': '#E9E7EB',
+        'on-incomplete-container': '#2D3037',
+        'light-primary': '#022448',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#1E3A5F',
+        'light-on-primary-container': '#FFFFFF',
+        'light-secondary': '#555F70',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#D6E0F4',
+        'light-on-secondary-container': '#121C2A',
+        'light-tertiary': '#341F00',
+        'light-on-tertiary': '#FFFFFF',
+        'light-tertiary-container': '#503300',
+        'light-on-tertiary-container': '#FFEEDC',
+        'light-error': '#BA1A1A',
+        'light-on-error': '#FFFFFF',
+        'light-error-container': '#FFDAD6',
+        'light-on-error-container': '#93000A',
+        'light-background': '#FAF9FC',
+        'light-on-background': '#1A1C1E',
+        'light-surface': '#FAF9FC',
+        'light-surface-dim': '#DAD9DD',
+        'light-surface-bright': '#FAF9FC',
+        'light-surface-container-lowest': '#FFFFFF',
+        'light-surface-container-low': '#F4F3F7',
+        'light-surface-container': '#EEEDF1',
+        'light-surface-container-high': '#E9E7EB',
+        'light-surface-container-highest': '#E3E2E6',
+        'light-on-surface': '#1A1C1E',
+        'light-surface-variant': '#E0E2EB',
+        'light-on-surface-variant': '#43474E',
+        'light-outline': '#74777F',
+        'light-outline-variant': '#C4C6CF',
+        'light-inverse-surface': '#2F3033',
+        'light-inverse-on-surface': '#F1F0F4',
+        'light-inverse-primary': '#ADC8F5',
+        'light-shadow': '#000000',
+        'light-scrim': '#000000',
+        'dark-primary': '#ADC8F5',
+        'dark-on-primary': '#133155',
+        'dark-primary-container': '#1E3A5F',
+        'dark-on-primary-container': '#D5E3FF',
+        'dark-secondary': '#BDC7DA',
+        'dark-on-secondary': '#273140',
+        'dark-secondary-container': '#40495A',
+        'dark-on-secondary-container': '#D9E3F7',
+        'dark-tertiary': '#EDBF7F',
+        'dark-on-tertiary': '#452B00',
+        'dark-tertiary-container': '#503300',
+        'dark-on-tertiary-container': '#FFDDB2',
+        'dark-error': '#FFB4AB',
+        'dark-on-error': '#690005',
+        'dark-error-container': '#93000A',
+        'dark-on-error-container': '#FFDAD6',
+        'dark-background': '#121316',
+        'dark-on-background': '#E3E2E6',
+        'dark-surface': '#121316',
+        'dark-surface-dim': '#121316',
+        'dark-surface-bright': '#38393C',
+        'dark-surface-container-lowest': '#0D0E11',
+        'dark-surface-container-low': '#1A1C1E',
+        'dark-surface-container': '#1E2022',
+        'dark-surface-container-high': '#292A2D',
+        'dark-surface-container-highest': '#343538',
+        'dark-on-surface': '#E3E2E6',
+        'dark-surface-variant': '#43474E',
+        'dark-on-surface-variant': '#C4C6CF',
+        'dark-outline': '#8E9199',
+        'dark-outline-variant': '#43474E',
+        'dark-inverse-surface': '#E3E2E6',
+        'dark-inverse-on-surface': '#2F3033',
+        'dark-inverse-primary': '#455F87',
+        'dark-shadow': '#000000',
+        'dark-scrim': '#000000',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Crimson Pro"', 'sans-serif'],
+        'headline': ['"Crimson Pro"', 'sans-serif'],
+        'title': ['"PT Sans"', 'sans-serif'],
+        'body': ['"PT Sans"', 'sans-serif'],
+        'label': ['"PT Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['30px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['26px', { lineHeight: '32px', letterSpacing: '-0.2px', fontWeight: '600' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '0px', fontWeight: '600' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '21px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '700' }],
+        'mono-sm': ['12px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&amp;family=PT+Sans:wght@400;700&amp;family=Spline+Sans+Mono:wght@400&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface text-light-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- App Shell Header -->
+    <header class="bg-light-surface-container-lowest border-b border-light-outline-variant">
+      <div class="max-w-6xl mx-auto px-gutter-xl py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-light-primary text-light-on-primary">
+            <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+          </span>
+          <span class="font-headline text-headline-md text-light-on-surface" data-design-text-token="headline-md">Proofline</span>
+        </div>
+        <nav aria-label="Fact-check workflow" class="flex items-center gap-gutter-lg">
+          <a href="../pdf-upload-desktop/PdfUploadDesktop.html" aria-current="step" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary border-b-2 border-light-primary pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">1.</span>
+            <span data-design-text-token="label-lg">Upload PDF</span>
+          </a>
+          <a href="../progress-desktop/ProgressDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">2.</span>
+            <span data-design-text-token="label-lg">Progress</span>
+          </a>
+          <a href="../report-desktop/ReportDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">3.</span>
+            <span data-design-text-token="label-lg">Report</span>
+          </a>
+        </nav>
+        <div class="flex items-center gap-gutter-xs text-light-on-surface-variant">
+          <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+          <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">24-hour report access</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-gutter-xl py-section">
+      <!-- State Preview Switcher -->
+      <div class="mb-gutter-xl flex flex-wrap items-center justify-between gap-gutter-md bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-sm">
+        <span class="font-body text-label-sm text-light-on-surface-variant px-gutter-sm" data-design-text-token="label-sm">Preview upload state:</span>
+        <div class="flex flex-wrap items-center gap-gutter-xs" role="tablist" aria-label="Upload validation states">
+          <button type="button" role="tab" aria-selected="true" data-state-btn="ready" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Ready (Valid PDF)</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state-btn="invalid" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Invalid file</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-state-btn="oversized" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Oversized file</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+        <!-- Left Column: Upload Form -->
+        <section class="lg:col-span-8 flex flex-col gap-gutter-lg">
+          <div class="flex flex-col gap-gutter-sm">
+            <h1 class="font-headline text-display-lg text-light-on-surface text-balance" data-design-text-token="display-lg">
+              Verify factual claims in your draft PDF
+            </h1>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              Upload a marketing brief, whitepaper, or editorial report to extract claims in document order and check them against primary sources.
+            </p>
+          </div>
+
+          <!-- File Picker Card -->
+          <form class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-lg" onsubmit="return false;">
+            <div class="flex flex-col gap-gutter-sm">
+              <label for="pdf-file-input" class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">
+                Document PDF file
+              </label>
+              <div class="border-2 border-dashed border-light-outline-variant rounded bg-light-surface-container-low p-gutter-xl flex flex-col items-center text-center gap-gutter-md">
+                <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-light-surface-container-lowest border border-light-outline-variant text-light-primary">
+                  <span class="material-symbols-outlined" aria-hidden="true">upload_file</span>
+                </span>
+                <div class="flex flex-col gap-gutter-xs">
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">
+                    Drop your PDF here or browse from your computer
+                  </p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">
+                    PDF must contain selectable text (not scanned images). Maximum 10 MiB and 30 pages.
+                  </p>
+                </div>
+                <input id="pdf-file-input" type="file" accept=".pdf,application/pdf" class="sr-only">
+                <label for="pdf-file-input" class="inline-flex items-center justify-center gap-gutter-sm min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-surface-container-lowest text-light-primary border border-light-outline-variant font-body text-label-lg cursor-pointer hover:bg-light-surface-container transition-colors duration-state-change">
+                  <span class="material-symbols-outlined" aria-hidden="true">folder_open</span>
+                  <span data-design-text-token="label-lg">Choose PDF file</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- State: Ready / Valid File -->
+            <div data-state-panel="ready" class="flex flex-col gap-gutter-md">
+              <div class="flex items-center justify-between gap-gutter-md p-gutter-md rounded bg-verified-container border border-verified text-on-verified-container">
+                <div class="flex items-center gap-gutter-md min-w-0">
+                  <span class="material-symbols-outlined shrink-0" aria-hidden="true">description</span>
+                  <div class="min-w-0">
+                    <p class="font-body text-title-md truncate" data-design-text-token="title-md">Q4_2025_Sustainability_Brief.pdf</p>
+                    <p class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">4.2 MiB · 18 pages · Selectable text detected</p>
+                  </div>
+                </div>
+                <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-light-surface-container-lowest text-on-verified-container font-body text-label-sm shrink-0">
+                  <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                  <span data-design-text-token="label-sm">Ready</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- State: Invalid File -->
+            <div data-state-panel="invalid" class="hidden flex-col gap-gutter-md">
+              <div role="alert" data-component-id="banner-error" data-component-type="banner" data-component-variant="error" class="flex items-start gap-gutter-md p-gutter-md rounded bg-light-error-container border border-light-error text-light-on-error-container">
+                <span class="material-symbols-outlined shrink-0 mt-0.5" aria-hidden="true">error</span>
+                <div class="flex flex-col gap-gutter-xs">
+                  <h2 class="font-body text-title-md" data-design-text-token="title-md">Invalid file type: campaign_deck_v3.pptx</h2>
+                  <p class="font-body text-body-md" data-design-text-token="body-md">
+                    Only PDF files with selectable text are supported. Export your presentation or document as a text-based PDF and try again.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- State: Oversized File -->
+            <div data-state-panel="oversized" class="hidden flex-col gap-gutter-md">
+              <div role="alert" data-component-id="banner-error" data-component-type="banner" data-component-variant="error" class="flex items-start gap-gutter-md p-gutter-md rounded bg-light-error-container border border-light-error text-light-on-error-container">
+                <span class="material-symbols-outlined shrink-0 mt-0.5" aria-hidden="true">error</span>
+                <div class="flex flex-col gap-gutter-xs">
+                  <h2 class="font-body text-title-md" data-design-text-token="title-md">File exceeds limits: Annual_Impact_2025_Full.pdf (14.8 MiB · 42 pages)</h2>
+                  <p class="font-body text-body-md" data-design-text-token="body-md">
+                    Uploads are limited to 10 MiB and 30 pages. Compress the PDF or split it into smaller sections before starting a fact-check.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Row -->
+            <div class="pt-gutter-md border-t border-light-outline-variant flex flex-col sm:flex-row sm:items-center justify-between gap-gutter-md">
+              <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">
+                Report remains accessible for 24 hours after completion.
+              </p>
+              <button id="start-btn" data-component-id="button-with-icon" data-component-type="button" data-component-variant="with-icon" type="submit" class="inline-flex items-center justify-center gap-gutter-sm shrink-0 whitespace-nowrap min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-primary text-light-on-primary font-body text-label-lg transition-colors duration-state-change hover:bg-light-primary-container focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-primary">
+                <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+                <span data-design-text-token="label-lg">Start fact-check</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Right Column: Requirements & Limits -->
+        <aside class="lg:col-span-4 flex flex-col gap-gutter-lg">
+          <div class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-light-on-surface" data-design-text-token="headline-md">
+              Upload requirements
+            </h2>
+            <ul class="flex flex-col gap-gutter-md">
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-primary shrink-0 mt-0.5" aria-hidden="true">text_fields</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">Selectable text required</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Image-only scans cannot be verified. Make sure you can highlight words in your PDF.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-primary shrink-0 mt-0.5" aria-hidden="true">hard_drive</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">10 MiB maximum file size</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Larger files are rejected before upload starts.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-primary shrink-0 mt-0.5" aria-hidden="true">menu_book</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">30 pages maximum</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Covers standard whitepapers, press kits, and campaign briefs.</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-primary shrink-0 mt-0.5" aria-hidden="true">timer</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">24 hours of report access</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Uploaded PDFs and generated reports are automatically deleted after 24 hours.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const buttons = document.querySelectorAll('[data-state-btn]');
+      const panels = document.querySelectorAll('[data-state-panel]');
+      const startBtn = document.getElementById('start-btn');
+
+      function setState(state) {
+        buttons.forEach(btn => {
+          const active = btn.getAttribute('data-state-btn') === state;
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          btn.className = active
+            ? 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change'
+            : 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change';
+        });
+
+        panels.forEach(panel => {
+          const match = panel.getAttribute('data-state-panel') === state;
+          panel.classList.toggle('hidden', !match);
+          panel.classList.toggle('flex', match);
+        });
+
+        const isReady = state === 'ready';
+        startBtn.disabled = !isReady;
+        startBtn.className = isReady
+          ? 'inline-flex items-center justify-center gap-gutter-sm min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-primary text-light-on-primary font-body text-label-lg transition-colors duration-state-change hover:bg-light-primary-container focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-primary'
+          : 'inline-flex items-center justify-center gap-gutter-sm min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-surface-container-highest text-light-outline font-body text-label-lg cursor-not-allowed';
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => setState(btn.getAttribute('data-state-btn')));
+      });
+    })();
+  </script>
+
+
+</body></html>

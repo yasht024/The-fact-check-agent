@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress — Proofline</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'verified': '#146C43',
+        'on-verified': '#FFFFFF',
+        'verified-container': '#E6F4EA',
+        'on-verified-container': '#0D4A2E',
+        'inaccurate': '#8A5300',
+        'on-inaccurate': '#FFFFFF',
+        'inaccurate-container': '#FFF3CD',
+        'on-inaccurate-container': '#5C3700',
+        'incomplete': '#43474E',
+        'on-incomplete': '#FFFFFF',
+        'incomplete-container': '#E9E7EB',
+        'on-incomplete-container': '#2D3037',
+        'light-primary': '#022448',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#1E3A5F',
+        'light-on-primary-container': '#FFFFFF',
+        'light-secondary': '#555F70',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#D6E0F4',
+        'light-on-secondary-container': '#121C2A',
+        'light-tertiary': '#341F00',
+        'light-on-tertiary': '#FFFFFF',
+        'light-tertiary-container': '#503300',
+        'light-on-tertiary-container': '#FFEEDC',
+        'light-error': '#BA1A1A',
+        'light-on-error': '#FFFFFF',
+        'light-error-container': '#FFDAD6',
+        'light-on-error-container': '#93000A',
+        'light-background': '#FAF9FC',
+        'light-on-background': '#1A1C1E',
+        'light-surface': '#FAF9FC',
+        'light-surface-dim': '#DAD9DD',
+        'light-surface-bright': '#FAF9FC',
+        'light-surface-container-lowest': '#FFFFFF',
+        'light-surface-container-low': '#F4F3F7',
+        'light-surface-container': '#EEEDF1',
+        'light-surface-container-high': '#E9E7EB',
+        'light-surface-container-highest': '#E3E2E6',
+        'light-on-surface': '#1A1C1E',
+        'light-surface-variant': '#E0E2EB',
+        'light-on-surface-variant': '#43474E',
+        'light-outline': '#74777F',
+        'light-outline-variant': '#C4C6CF',
+        'light-inverse-surface': '#2F3033',
+        'light-inverse-on-surface': '#F1F0F4',
+        'light-inverse-primary': '#ADC8F5',
+        'light-shadow': '#000000',
+        'light-scrim': '#000000',
+        'dark-primary': '#ADC8F5',
+        'dark-on-primary': '#133155',
+        'dark-primary-container': '#1E3A5F',
+        'dark-on-primary-container': '#D5E3FF',
+        'dark-secondary': '#BDC7DA',
+        'dark-on-secondary': '#273140',
+        'dark-secondary-container': '#40495A',
+        'dark-on-secondary-container': '#D9E3F7',
+        'dark-tertiary': '#EDBF7F',
+        'dark-on-tertiary': '#452B00',
+        'dark-tertiary-container': '#503300',
+        'dark-on-tertiary-container': '#FFDDB2',
+        'dark-error': '#FFB4AB',
+        'dark-on-error': '#690005',
+        'dark-error-container': '#93000A',
+        'dark-on-error-container': '#FFDAD6',
+        'dark-background': '#121316',
+        'dark-on-background': '#E3E2E6',
+        'dark-surface': '#121316',
+        'dark-surface-dim': '#121316',
+        'dark-surface-bright': '#38393C',
+        'dark-surface-container-lowest': '#0D0E11',
+        'dark-surface-container-low': '#1A1C1E',
+        'dark-surface-container': '#1E2022',
+        'dark-surface-container-high': '#292A2D',
+        'dark-surface-container-highest': '#343538',
+        'dark-on-surface': '#E3E2E6',
+        'dark-surface-variant': '#43474E',
+        'dark-on-surface-variant': '#C4C6CF',
+        'dark-outline': '#8E9199',
+        'dark-outline-variant': '#43474E',
+        'dark-inverse-surface': '#E3E2E6',
+        'dark-inverse-on-surface': '#2F3033',
+        'dark-inverse-primary': '#455F87',
+        'dark-shadow': '#000000',
+        'dark-scrim': '#000000',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Crimson Pro"', 'sans-serif'],
+        'headline': ['"Crimson Pro"', 'sans-serif'],
+        'title': ['"PT Sans"', 'sans-serif'],
+        'body': ['"PT Sans"', 'sans-serif'],
+        'label': ['"PT Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['30px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['26px', { lineHeight: '32px', letterSpacing: '-0.2px', fontWeight: '600' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '0px', fontWeight: '600' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '21px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '700' }],
+        'mono-sm': ['12px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&amp;family=PT+Sans:wght@400;700&amp;family=Spline+Sans+Mono:wght@400&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface text-light-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- App Shell Header -->
+    <header class="bg-light-surface-container-lowest border-b border-light-outline-variant">
+      <div class="max-w-6xl mx-auto px-gutter-xl py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-light-primary text-light-on-primary">
+            <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+          </span>
+          <span class="font-headline text-headline-md text-light-on-surface" data-design-text-token="headline-md">Proofline</span>
+        </div>
+        <nav aria-label="Fact-check workflow" class="flex items-center gap-gutter-lg">
+          <a href="../pdf-upload-desktop/PdfUploadDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">1.</span>
+            <span data-design-text-token="label-lg">Upload PDF</span>
+          </a>
+          <a href="../progress-desktop/ProgressDesktop.html" aria-current="step" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary border-b-2 border-light-primary pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">2.</span>
+            <span data-design-text-token="label-lg">Progress</span>
+          </a>
+          <a href="../report-desktop/ReportDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">3.</span>
+            <span data-design-text-token="label-lg">Report</span>
+          </a>
+        </nav>
+        <div class="flex items-center gap-gutter-xs text-light-on-surface-variant">
+          <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+          <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">24-hour report access</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-gutter-xl py-section flex flex-col gap-gutter-xl">
+      <!-- State Preview Switcher -->
+      <div class="flex flex-wrap items-center justify-between gap-gutter-md bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-sm">
+        <span class="font-body text-label-sm text-light-on-surface-variant px-gutter-sm" data-design-text-token="label-sm">Preview progress state:</span>
+        <div class="flex flex-wrap items-center gap-gutter-xs" role="tablist" aria-label="Progress states">
+          <button type="button" role="tab" aria-selected="true" data-prog-btn="checking" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Verifying claims (9 of 14)</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-prog-btn="offline" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Temporary connection problem</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-prog-btn="extracting" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Early stage (count unknown)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Connection Warning Banner (visible in offline state) -->
+      <div id="connection-banner" role="region" aria-label="Connection warning banner" data-component-id="banner-with-action" data-component-type="banner" data-component-variant="warning" class="hidden flex-col sm:flex-row sm:items-center justify-between gap-gutter-md p-gutter-md rounded bg-inaccurate-container border border-inaccurate text-on-inaccurate-container">
+        <div class="flex items-start gap-gutter-md">
+          <span class="material-symbols-outlined shrink-0 mt-0.5" aria-hidden="true">wifi_off</span>
+          <div class="flex flex-col gap-gutter-xs">
+            <h2 class="font-body text-title-md" data-design-text-token="title-md">Temporary connection problem</h2>
+            <p class="font-body text-body-md" data-design-text-token="body-md">
+              Live updates paused while reconnecting to the verification service. All findings received so far remain visible below.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="inline-flex items-center justify-center gap-gutter-xs min-h-11 px-gutter-md py-gutter-xs rounded-sm bg-light-surface-container-lowest text-on-inaccurate-container border border-inaccurate font-body text-label-lg shrink-0 hover:bg-light-surface-container-low">
+          <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+          <span data-design-text-token="label-lg">Retry connection</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+        <!-- Left Column: Stage Tracker & Progress -->
+        <section class="lg:col-span-5 flex flex-col gap-gutter-lg">
+          <div class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-lg">
+            <div class="flex flex-col gap-gutter-xs">
+              <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Q4_2025_Sustainability_Brief.pdf · 4.2 MiB · 18 pages</span>
+              <h1 id="stage-heading" class="font-headline text-headline-lg text-light-on-surface" data-design-text-token="headline-lg">
+                Verifying claims
+              </h1>
+            </div>
+
+            <!-- Claims Checked Counter -->
+            <div class="bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-md flex flex-col gap-gutter-sm">
+              <div class="flex items-baseline justify-between gap-gutter-sm">
+                <span class="font-body text-label-lg text-light-on-surface" data-design-text-token="label-lg">Claims checked</span>
+                <span id="claims-counter" class="font-mono text-title-lg text-light-primary tabular-nums" data-design-text-token="title-lg">9 of 14</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-light-surface-container-highest overflow-hidden">
+                <div id="progress-bar" class="h-2 rounded-full bg-light-primary w-2/3"></div>
+              </div>
+              <p id="progress-subtext" class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">
+                Checking remaining 5 claims in document order.
+              </p>
+            </div>
+
+            <!-- Processing Stages List -->
+            <ol class="flex flex-col gap-gutter-md" aria-label="Processing stages">
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-verified shrink-0 mt-0.5" aria-hidden="true">check_circle</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">1. Extract selectable text</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Completed across 18 pages</p>
+                </div>
+              </li>
+              <li id="stage-2" class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-verified shrink-0 mt-0.5" aria-hidden="true">check_circle</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">2. Identify checkable claims</p>
+                  <p id="stage-2-desc" class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">14 factual claims found</p>
+                </div>
+              </li>
+              <li id="stage-3" class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-primary shrink-0 mt-0.5" aria-hidden="true">pending</span>
+                <div>
+                  <p class="font-body text-title-md text-light-primary" data-design-text-token="title-md">3. Verify against primary sources</p>
+                  <p id="stage-3-desc" class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">In progress — 9 of 14 checked</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-light-outline shrink-0 mt-0.5" aria-hidden="true">radio_button_unchecked</span>
+                <div>
+                  <p class="font-body text-title-md text-light-on-surface-variant" data-design-text-token="title-md">4. Assemble final report</p>
+                  <p class="font-body text-body-md text-light-on-surface-variant" data-design-text-token="body-md">Waiting for verification to finish</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Right Column: Available Findings So Far -->
+        <section class="lg:col-span-7 flex flex-col gap-gutter-md">
+          <div class="flex items-center justify-between gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-light-on-surface" data-design-text-token="headline-md">
+              Available findings
+            </h2>
+            <span id="findings-count" class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Showing 4 completed claims</span>
+          </div>
+
+          <div id="findings-list" class="flex flex-col gap-gutter-md">
+            <!-- Finding 1 -->
+            <article class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-sm">
+              <div class="flex items-center justify-between gap-gutter-sm">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 2 · Claim 1</span>
+                <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-verified-container text-on-verified-container font-body text-label-sm">
+                  <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                  <span data-design-text-token="label-sm">Verified</span>
+                </span>
+              </div>
+              <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+                &#34;North American manufacturing facilities reduced Scope 2 electricity emissions by 31% in FY 2024.&#34;
+              </blockquote>
+              <p class="font-body text-body-md text-light-on-surface-variant text-pretty" data-design-text-token="body-md">
+                Matches audited FY 2024 EPA eGRID disclosures (31.4% reduction across 6 plants).
+              </p>
+            </article>
+
+            <!-- Finding 2 -->
+            <article class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-sm">
+              <div class="flex items-center justify-between gap-gutter-sm">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 4 · Claim 2</span>
+                <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-inaccurate-container text-on-inaccurate-container font-body text-label-sm">
+                  <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+                  <span data-design-text-token="label-sm">Inaccurate</span>
+                </span>
+              </div>
+              <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+                &#34;Global electric vehicle deliveries rose 38% year-over-year in Q3 2025.&#34;
+              </blockquote>
+              <p class="font-body text-body-md text-light-on-surface-variant text-pretty" data-design-text-token="body-md">
+                Correction: IEA Q3 2025 data reports a 25.2% year-over-year increase; 38% reflects Q3 2023.
+              </p>
+            </article>
+
+            <!-- Finding 3 -->
+            <article class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-sm">
+              <div class="flex items-center justify-between gap-gutter-sm">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 6 · Claim 3</span>
+                <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-light-error-container text-light-on-error-container font-body text-label-sm">
+                  <span class="material-symbols-outlined" aria-hidden="true">cancel</span>
+                  <span data-design-text-token="label-sm">False</span>
+                </span>
+              </div>
+              <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+                &#34;All European Union member states banned single-use plastic B2B shipping wraps in January 2025.&#34;
+              </blockquote>
+              <p class="font-body text-body-md text-light-on-surface-variant text-pretty" data-design-text-token="body-md">
+                Correction: The EU Packaging and Packaging Waste Regulation phases in B2B wrap restrictions starting in 2030.
+              </p>
+            </article>
+
+            <!-- Finding 4 -->
+            <article class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-lg flex flex-col gap-gutter-sm">
+              <div class="flex items-center justify-between gap-gutter-sm">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 7 · Claim 4</span>
+                <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-incomplete-container text-on-incomplete-container font-body text-label-sm">
+                  <span class="material-symbols-outlined" aria-hidden="true">help</span>
+                  <span data-design-text-token="label-sm">Check incomplete</span>
+                </span>
+              </div>
+              <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+                &#34;Supplier Tier-2 water recycling reached 74% across Southeast Asian partner mills.&#34;
+              </blockquote>
+              <p class="font-body text-body-md text-light-on-surface-variant text-pretty" data-design-text-token="body-md">
+                No public Tier-2 mill disclosure was found; internal supplier audit documentation is required.
+              </p>
+            </article>
+          </div>
+
+          <!-- Early stage empty findings placeholder -->
+          <div id="early-findings-empty" class="hidden bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex-col items-center text-center gap-gutter-sm">
+            <span class="material-symbols-outlined text-light-primary" aria-hidden="true">hourglass_top</span>
+            <p class="font-body text-title-md text-light-on-surface" data-design-text-token="title-md">Identifying checkable claims</p>
+            <p class="font-body text-body-md text-light-on-surface-variant max-w-prose" data-design-text-token="body-md">
+              Findings will appear here in document order as soon as claim extraction finishes.
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const buttons = document.querySelectorAll('[data-prog-btn]');
+      const banner = document.getElementById('connection-banner');
+      const stageHeading = document.getElementById('stage-heading');
+      const claimsCounter = document.getElementById('claims-counter');
+      const progressBar = document.getElementById('progress-bar');
+      const progressSubtext = document.getElementById('progress-subtext');
+      const stage2Desc = document.getElementById('stage-2-desc');
+      const stage3Desc = document.getElementById('stage-3-desc');
+      const findingsList = document.getElementById('findings-list');
+      const earlyEmpty = document.getElementById('early-findings-empty');
+      const findingsCount = document.getElementById('findings-count');
+
+      function setMode(mode) {
+        buttons.forEach(btn => {
+          const active = btn.getAttribute('data-prog-btn') === mode;
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          btn.className = active
+            ? 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change'
+            : 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change';
+        });
+
+        banner.classList.toggle('hidden', mode !== 'offline');
+        banner.classList.toggle('flex', mode === 'offline');
+
+        if (mode === 'extracting') {
+          stageHeading.textContent = 'Identifying checkable claims';
+          claimsCounter.textContent = 'Count pending…';
+          progressBar.className = 'h-2 rounded-full bg-light-primary w-1/4';
+          progressSubtext.textContent = 'Scanning 18 pages for factual statements, dates, and figures.';
+          stage2Desc.textContent = 'In progress — scanning document';
+          stage3Desc.textContent = 'Waiting for claim list';
+          findingsList.classList.add('hidden');
+          earlyEmpty.classList.remove('hidden');
+          earlyEmpty.classList.add('flex');
+          findingsCount.textContent = '0 completed claims';
+        } else {
+          stageHeading.textContent = 'Verifying claims against sources';
+          claimsCounter.textContent = '9 of 14';
+          progressBar.className = 'h-2 rounded-full bg-light-primary w-2/3';
+          progressSubtext.textContent = mode === 'offline'
+            ? 'Paused during temporary connection problem. 9 findings preserved.'
+            : 'Checking remaining 5 claims in document order.';
+          stage2Desc.textContent = '14 factual claims found';
+          stage3Desc.textContent = mode === 'offline'
+            ? 'Reconnecting — 9 of 14 checked'
+            : 'In progress — 9 of 14 checked';
+          findingsList.classList.remove('hidden');
+          earlyEmpty.classList.add('hidden');
+          earlyEmpty.classList.remove('flex');
+          findingsCount.textContent = 'Showing 4 completed claims';
+        }
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => setMode(btn.getAttribute('data-prog-btn')));
+      });
+    })();
+  </script>
+
+
+</body></html>

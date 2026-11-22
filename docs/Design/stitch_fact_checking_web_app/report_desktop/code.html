@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report — Proofline</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'verified': '#146C43',
+        'on-verified': '#FFFFFF',
+        'verified-container': '#E6F4EA',
+        'on-verified-container': '#0D4A2E',
+        'inaccurate': '#8A5300',
+        'on-inaccurate': '#FFFFFF',
+        'inaccurate-container': '#FFF3CD',
+        'on-inaccurate-container': '#5C3700',
+        'incomplete': '#43474E',
+        'on-incomplete': '#FFFFFF',
+        'incomplete-container': '#E9E7EB',
+        'on-incomplete-container': '#2D3037',
+        'light-primary': '#022448',
+        'light-on-primary': '#FFFFFF',
+        'light-primary-container': '#1E3A5F',
+        'light-on-primary-container': '#FFFFFF',
+        'light-secondary': '#555F70',
+        'light-on-secondary': '#FFFFFF',
+        'light-secondary-container': '#D6E0F4',
+        'light-on-secondary-container': '#121C2A',
+        'light-tertiary': '#341F00',
+        'light-on-tertiary': '#FFFFFF',
+        'light-tertiary-container': '#503300',
+        'light-on-tertiary-container': '#FFEEDC',
+        'light-error': '#BA1A1A',
+        'light-on-error': '#FFFFFF',
+        'light-error-container': '#FFDAD6',
+        'light-on-error-container': '#93000A',
+        'light-background': '#FAF9FC',
+        'light-on-background': '#1A1C1E',
+        'light-surface': '#FAF9FC',
+        'light-surface-dim': '#DAD9DD',
+        'light-surface-bright': '#FAF9FC',
+        'light-surface-container-lowest': '#FFFFFF',
+        'light-surface-container-low': '#F4F3F7',
+        'light-surface-container': '#EEEDF1',
+        'light-surface-container-high': '#E9E7EB',
+        'light-surface-container-highest': '#E3E2E6',
+        'light-on-surface': '#1A1C1E',
+        'light-surface-variant': '#E0E2EB',
+        'light-on-surface-variant': '#43474E',
+        'light-outline': '#74777F',
+        'light-outline-variant': '#C4C6CF',
+        'light-inverse-surface': '#2F3033',
+        'light-inverse-on-surface': '#F1F0F4',
+        'light-inverse-primary': '#ADC8F5',
+        'light-shadow': '#000000',
+        'light-scrim': '#000000',
+        'dark-primary': '#ADC8F5',
+        'dark-on-primary': '#133155',
+        'dark-primary-container': '#1E3A5F',
+        'dark-on-primary-container': '#D5E3FF',
+        'dark-secondary': '#BDC7DA',
+        'dark-on-secondary': '#273140',
+        'dark-secondary-container': '#40495A',
+        'dark-on-secondary-container': '#D9E3F7',
+        'dark-tertiary': '#EDBF7F',
+        'dark-on-tertiary': '#452B00',
+        'dark-tertiary-container': '#503300',
+        'dark-on-tertiary-container': '#FFDDB2',
+        'dark-error': '#FFB4AB',
+        'dark-on-error': '#690005',
+        'dark-error-container': '#93000A',
+        'dark-on-error-container': '#FFDAD6',
+        'dark-background': '#121316',
+        'dark-on-background': '#E3E2E6',
+        'dark-surface': '#121316',
+        'dark-surface-dim': '#121316',
+        'dark-surface-bright': '#38393C',
+        'dark-surface-container-lowest': '#0D0E11',
+        'dark-surface-container-low': '#1A1C1E',
+        'dark-surface-container': '#1E2022',
+        'dark-surface-container-high': '#292A2D',
+        'dark-surface-container-highest': '#343538',
+        'dark-on-surface': '#E3E2E6',
+        'dark-surface-variant': '#43474E',
+        'dark-on-surface-variant': '#C4C6CF',
+        'dark-outline': '#8E9199',
+        'dark-outline-variant': '#43474E',
+        'dark-inverse-surface': '#E3E2E6',
+        'dark-inverse-on-surface': '#2F3033',
+        'dark-inverse-primary': '#455F87',
+        'dark-shadow': '#000000',
+        'dark-scrim': '#000000',
+      },
+      borderRadius: {
+        'sm': '6px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Crimson Pro"', 'sans-serif'],
+        'headline': ['"Crimson Pro"', 'sans-serif'],
+        'title': ['"PT Sans"', 'sans-serif'],
+        'body': ['"PT Sans"', 'sans-serif'],
+        'label': ['"PT Sans"', 'sans-serif'],
+        'mono': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['40px', { lineHeight: '46px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['30px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg': ['32px', { lineHeight: '38px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'headline-lg-mobile': ['26px', { lineHeight: '32px', letterSpacing: '-0.2px', fontWeight: '600' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '0px', fontWeight: '600' }],
+        'title-lg': ['20px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '21px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.25px', fontWeight: '700' }],
+        'mono-sm': ['12px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600&amp;family=PT+Sans:wght@400;700&amp;family=Spline+Sans+Mono:wght@400&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>.material-symbols-outlined { display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle; }</style>
+</head>
+<body class="bg-light-surface text-light-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+    <!-- App Shell Header -->
+    <header class="bg-light-surface-container-lowest border-b border-light-outline-variant">
+      <div class="max-w-6xl mx-auto px-gutter-xl py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="inline-flex items-center justify-center w-9 h-9 rounded-sm bg-light-primary text-light-on-primary">
+            <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+          </span>
+          <span class="font-headline text-headline-md text-light-on-surface" data-design-text-token="headline-md">Proofline</span>
+        </div>
+        <nav aria-label="Fact-check workflow" class="flex items-center gap-gutter-lg">
+          <a href="../pdf-upload-desktop/PdfUploadDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">1.</span>
+            <span data-design-text-token="label-lg">Upload PDF</span>
+          </a>
+          <a href="../progress-desktop/ProgressDesktop.html" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-on-surface-variant hover:text-light-on-surface pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">2.</span>
+            <span data-design-text-token="label-lg">Progress</span>
+          </a>
+          <a href="../report-desktop/ReportDesktop.html" aria-current="step" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary border-b-2 border-light-primary pb-1">
+            <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">3.</span>
+            <span data-design-text-token="label-lg">Report</span>
+          </a>
+        </nav>
+        <div class="flex items-center gap-gutter-xs text-light-on-surface-variant">
+          <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+          <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">23h 48m remaining</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-gutter-xl py-section flex flex-col gap-gutter-xl">
+      <!-- State Preview Switcher -->
+      <div class="flex flex-wrap items-center justify-between gap-gutter-md bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-sm">
+        <span class="font-body text-label-sm text-light-on-surface-variant px-gutter-sm" data-design-text-token="label-sm">Preview report state:</span>
+        <div class="flex flex-wrap items-center gap-gutter-xs" role="tablist" aria-label="Report states">
+          <button type="button" role="tab" aria-selected="true" data-report-btn="complete" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Report with skipped pages</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-report-btn="unreadable" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Unreadable PDF</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-report-btn="noclaims" class="min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">No checkable claims</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STATE 1: Full Report (with Skipped Pages notice) -->
+      <div data-report-panel="complete" class="flex flex-col gap-gutter-xl">
+        <!-- Report Header -->
+        <section class="flex flex-col gap-gutter-md">
+          <div class="flex flex-wrap items-end justify-between gap-gutter-md">
+            <div class="flex flex-col gap-gutter-xs">
+              <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Q4_2025_Sustainability_Brief.pdf · 18 pages · Access expires in 23h 48m</span>
+              <h1 class="font-headline text-display-lg text-light-on-surface" data-design-text-token="display-lg">
+                Fact-check report
+              </h1>
+            </div>
+            <a href="../pdf-upload-desktop/PdfUploadDesktop.html" class="inline-flex items-center justify-center gap-gutter-xs min-h-11 px-gutter-md py-gutter-sm rounded-sm bg-light-surface-container-lowest text-light-primary border border-light-outline-variant font-body text-label-lg hover:bg-light-surface-container-low">
+              <span class="material-symbols-outlined" aria-hidden="true">upload_file</span>
+              <span data-design-text-token="label-lg">Check another PDF</span>
+            </a>
+          </div>
+
+          <!-- Skipped Pages Notice -->
+          <div role="region" aria-label="Skipped pages notice" class="flex items-start gap-gutter-md p-gutter-md rounded bg-inaccurate-container border border-inaccurate text-on-inaccurate-container">
+            <span class="material-symbols-outlined shrink-0 mt-0.5" aria-hidden="true">find_in_page</span>
+            <div class="flex flex-col gap-gutter-xs">
+              <h2 class="font-body text-title-md" data-design-text-token="title-md">Skipped pages: Pages 9 and 15</h2>
+              <p class="font-body text-body-md" data-design-text-token="body-md">
+                2 pages were skipped because they contain scanned images or flattened charts without selectable text. Claims on those pages were not checked.
+              </p>
+            </div>
+          </div>
+
+          <!-- Verdict Filter Controls -->
+          <div class="flex flex-wrap items-center gap-gutter-sm pt-gutter-xs" role="group" aria-label="Filter claims by verdict">
+            <button type="button" data-filter="all" class="min-h-11 px-gutter-md py-gutter-xs rounded-full bg-light-primary text-light-on-primary font-body text-label-lg inline-flex items-center gap-gutter-xs">
+              <span data-design-text-token="label-lg">All claims</span>
+              <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">(5)</span>
+            </button>
+            <button type="button" data-filter="Verified" class="min-h-11 px-gutter-md py-gutter-xs rounded-full bg-verified-container text-on-verified-container border border-light-outline-variant font-body text-label-lg inline-flex items-center gap-gutter-xs">
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <span data-design-text-token="label-lg">Verified</span>
+              <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">(2)</span>
+            </button>
+            <button type="button" data-filter="Inaccurate" class="min-h-11 px-gutter-md py-gutter-xs rounded-full bg-inaccurate-container text-on-inaccurate-container border border-light-outline-variant font-body text-label-lg inline-flex items-center gap-gutter-xs">
+              <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+              <span data-design-text-token="label-lg">Inaccurate</span>
+              <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">(1)</span>
+            </button>
+            <button type="button" data-filter="False" class="min-h-11 px-gutter-md py-gutter-xs rounded-full bg-light-error-container text-light-on-error-container border border-light-outline-variant font-body text-label-lg inline-flex items-center gap-gutter-xs">
+              <span class="material-symbols-outlined" aria-hidden="true">cancel</span>
+              <span data-design-text-token="label-lg">False</span>
+              <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">(1)</span>
+            </button>
+            <button type="button" data-filter="Check incomplete" class="min-h-11 px-gutter-md py-gutter-xs rounded-full bg-incomplete-container text-on-incomplete-container border border-light-outline-variant font-body text-label-lg inline-flex items-center gap-gutter-xs">
+              <span class="material-symbols-outlined" aria-hidden="true">help</span>
+              <span data-design-text-token="label-lg">Check incomplete</span>
+              <span class="font-mono text-mono-sm tabular-nums" data-design-text-token="mono-sm">(1)</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Claims List in Document Order -->
+        <section class="flex flex-col gap-gutter-md" aria-label="Claims in document order">
+          <!-- Claim 1: Page 2 (Verified) -->
+          <article data-claim-verdict="Verified" class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-md">
+            <header class="flex flex-wrap items-center justify-between gap-gutter-sm">
+              <div class="flex items-center gap-gutter-md">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 2 · Document order #1</span>
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Reporting period: FY 2024</span>
+              </div>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-verified-container text-on-verified-container font-body text-label-sm">
+                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                <span data-design-text-token="label-sm">Verified</span>
+              </span>
+            </header>
+            <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+              &#34;North American manufacturing facilities reduced Scope 2 electricity emissions by 31% in FY 2024.&#34;
+            </blockquote>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              Matches audited FY 2024 EPA eGRID disclosures and third-party assurance tables showing a 31.4% market-based reduction across six North American plants.
+            </p>
+            <footer class="pt-gutter-sm border-t border-light-outline-variant flex flex-wrap items-center gap-gutter-md">
+              <span class="font-body text-label-sm text-light-on-surface-variant" data-design-text-token="label-sm">Sources:</span>
+              <a href="#source-epa" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">EPA eGRID Summary 2024</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+              <a href="#source-assurance" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">CDP Climate Disclosure FY24</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+            </footer>
+          </article>
+
+          <!-- Claim 2: Page 4 (Inaccurate) -->
+          <article data-claim-verdict="Inaccurate" class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-md">
+            <header class="flex flex-wrap items-center justify-between gap-gutter-sm">
+              <div class="flex items-center gap-gutter-md">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 4 · Document order #2</span>
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Reporting period: Q3 2025</span>
+              </div>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-inaccurate-container text-on-inaccurate-container font-body text-label-sm">
+                <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+                <span data-design-text-token="label-sm">Inaccurate</span>
+              </span>
+            </header>
+            <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+              &#34;Global electric vehicle deliveries rose 38% year-over-year in Q3 2025.&#34;
+            </blockquote>
+            <div class="bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-md flex flex-col gap-gutter-xs">
+              <span class="font-body text-label-sm text-on-inaccurate-container" data-design-text-token="label-sm">Suggested correction</span>
+              <p class="font-body text-body-md text-light-on-surface" data-design-text-token="body-md">
+                Replace &#34;38%&#34; with &#34;25.2%&#34; for Q3 2025, or specify that 38% refers to Q3 2023.
+              </p>
+            </div>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              IEA quarterly EV tracker data for Q3 2025 records 25.2% year-over-year growth. The 38% figure comes from the Q3 2023 reporting cycle.
+            </p>
+            <footer class="pt-gutter-sm border-t border-light-outline-variant flex flex-wrap items-center gap-gutter-md">
+              <span class="font-body text-label-sm text-light-on-surface-variant" data-design-text-token="label-sm">Sources:</span>
+              <a href="#source-iea" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">IEA Global EV Outlook Q3 2025</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+            </footer>
+          </article>
+
+          <!-- Claim 3: Page 6 (False) -->
+          <article data-claim-verdict="False" class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-md">
+            <header class="flex flex-wrap items-center justify-between gap-gutter-sm">
+              <div class="flex items-center gap-gutter-md">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 6 · Document order #3</span>
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Reporting period: Jan 2025</span>
+              </div>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-light-error-container text-light-on-error-container font-body text-label-sm">
+                <span class="material-symbols-outlined" aria-hidden="true">cancel</span>
+                <span data-design-text-token="label-sm">False</span>
+              </span>
+            </header>
+            <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+              &#34;All European Union member states banned single-use plastic B2B shipping wraps in January 2025.&#34;
+            </blockquote>
+            <div class="bg-light-surface-container-low border border-light-outline-variant rounded p-gutter-md flex flex-col gap-gutter-xs">
+              <span class="font-body text-label-sm text-light-on-error-container" data-design-text-token="label-sm">Suggested correction</span>
+              <p class="font-body text-body-md text-light-on-surface" data-design-text-token="body-md">
+                Remove the claim of a January 2025 ban; EU PPWR B2B transport-wrap restrictions take effect in 2030.
+              </p>
+            </div>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              The EU Packaging and Packaging Waste Regulation (PPWR) entered into force in early 2025, but the ban on single-use plastic B2B pallet and shipping wraps begins on January 1, 2030.
+            </p>
+            <footer class="pt-gutter-sm border-t border-light-outline-variant flex flex-wrap items-center gap-gutter-md">
+              <span class="font-body text-label-sm text-light-on-surface-variant" data-design-text-token="label-sm">Sources:</span>
+              <a href="#source-eurlex" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">EUR-Lex Regulation (EU) 2025/40</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+            </footer>
+          </article>
+
+          <!-- Claim 4: Page 7 (Check incomplete) -->
+          <article data-claim-verdict="Check incomplete" class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-md">
+            <header class="flex flex-wrap items-center justify-between gap-gutter-sm">
+              <div class="flex items-center gap-gutter-md">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 7 · Document order #4</span>
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Reporting period: FY 2024–2025</span>
+              </div>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-incomplete-container text-on-incomplete-container font-body text-label-sm">
+                <span class="material-symbols-outlined" aria-hidden="true">help</span>
+                <span data-design-text-token="label-sm">Check incomplete</span>
+              </span>
+            </header>
+            <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+              &#34;Supplier Tier-2 water recycling reached 74% across Southeast Asian partner mills.&#34;
+            </blockquote>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              No public Tier-2 mill water-recycling dataset or supplier audit report could be located. Editorial review should request internal supplier verification records before publication.
+            </p>
+            <footer class="pt-gutter-sm border-t border-light-outline-variant flex flex-wrap items-center gap-gutter-md">
+              <span class="font-body text-label-sm text-light-on-surface-variant" data-design-text-token="label-sm">Sources checked:</span>
+              <a href="#source-wri" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">WRI Aqueduct Supply Chain Index</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+            </footer>
+          </article>
+
+          <!-- Claim 5: Page 11 (Verified) -->
+          <article data-claim-verdict="Verified" class="bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl flex flex-col gap-gutter-md">
+            <header class="flex flex-wrap items-center justify-between gap-gutter-sm">
+              <div class="flex items-center gap-gutter-md">
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Page 11 · Document order #5</span>
+                <span class="font-mono text-mono-sm text-light-on-surface-variant tabular-nums" data-design-text-token="mono-sm">Reporting period: Q1–Q3 2025</span>
+              </div>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-verified-container text-on-verified-container font-body text-label-sm">
+                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                <span data-design-text-token="label-sm">Verified</span>
+              </span>
+            </header>
+            <blockquote class="font-headline text-headline-md text-light-on-surface text-pretty" data-design-text-token="headline-md">
+              &#34;U.S. industrial solar PPA capacity additions exceeded 12 GW through Q3 2025.&#34;
+            </blockquote>
+            <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              Confirmed by SEIA / Wood Mackenzie Q3 2025 Solar Market Insight report (12.4 GW utility and corporate industrial PPAs).
+            </p>
+            <footer class="pt-gutter-sm border-t border-light-outline-variant flex flex-wrap items-center gap-gutter-md">
+              <span class="font-body text-label-sm text-light-on-surface-variant" data-design-text-token="label-sm">Sources:</span>
+              <a href="#source-seia" class="inline-flex items-center gap-gutter-xs font-body text-label-lg text-light-primary underline hover:text-light-primary-container">
+                <span data-design-text-token="label-lg">SEIA Solar Market Insight Q3 2025</span>
+                <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+              </a>
+            </footer>
+          </article>
+        </section>
+      </div>
+
+      <!-- STATE 2: Unreadable PDF -->
+      <section data-report-panel="unreadable" class="hidden flex-col items-center text-center bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl gap-gutter-md max-w-2xl mx-auto">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-light-error-container text-light-on-error-container">
+          <span class="material-symbols-outlined" aria-hidden="true">broken_image</span>
+        </span>
+        <div class="flex flex-col gap-gutter-xs">
+          <h1 class="font-headline text-headline-lg text-light-on-surface" data-design-text-token="headline-lg">
+            Unable to read PDF text
+          </h1>
+          <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+            Scanned_Brochure_2025.pdf appears to be password-protected or composed entirely of scanned images without selectable text.
+          </p>
+        </div>
+        <a href="../pdf-upload-desktop/PdfUploadDesktop.html" class="inline-flex items-center justify-center gap-gutter-sm min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-primary text-light-on-primary font-body text-label-lg">
+          <span class="material-symbols-outlined" aria-hidden="true">upload_file</span>
+          <span data-design-text-token="label-lg">Upload a readable PDF</span>
+        </a>
+      </section>
+
+      <!-- STATE 3: No Checkable Claims -->
+      <section data-report-panel="noclaims" class="hidden flex-col items-center text-center bg-light-surface-container-lowest border border-light-outline-variant rounded p-gutter-xl gap-gutter-md max-w-2xl mx-auto">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-incomplete-container text-on-incomplete-container">
+          <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+        </span>
+        <div class="flex flex-col gap-gutter-xs">
+          <h1 class="font-headline text-headline-lg text-light-on-surface" data-design-text-token="headline-lg">
+            No checkable claims found
+          </h1>
+          <p class="font-body text-body-lg text-light-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+            We scanned all 12 pages of Brand_Voice_Guidelines.pdf, but the document contains only creative direction and subjective copy without verifiable statistics, dates, or factual assertions.
+          </p>
+        </div>
+        <a href="../pdf-upload-desktop/PdfUploadDesktop.html" class="inline-flex items-center justify-center gap-gutter-sm min-h-11 px-gutter-lg py-gutter-sm rounded-sm bg-light-primary text-light-on-primary font-body text-label-lg">
+          <span class="material-symbols-outlined" aria-hidden="true">upload_file</span>
+          <span data-design-text-token="label-lg">Check another PDF</span>
+        </a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const stateBtns = document.querySelectorAll('[data-report-btn]');
+      const panels = document.querySelectorAll('[data-report-panel]');
+      const filterBtns = document.querySelectorAll('[data-filter]');
+      const claims = document.querySelectorAll('[data-claim-verdict]');
+
+      function setReportState(state) {
+        stateBtns.forEach(btn => {
+          const active = btn.getAttribute('data-report-btn') === state;
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          btn.className = active
+            ? 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg bg-light-primary text-light-on-primary transition-colors duration-state-change'
+            : 'min-h-11 px-gutter-md py-gutter-xs rounded-sm font-body text-label-lg text-light-on-surface-variant hover:bg-light-surface-container-high transition-colors duration-state-change';
+        });
+
+        panels.forEach(panel => {
+          const match = panel.getAttribute('data-report-panel') === state;
+          panel.classList.toggle('hidden', !match);
+          panel.classList.toggle('flex', match);
+        });
+      }
+
+      stateBtns.forEach(btn => {
+        btn.addEventListener('click', () => setReportState(btn.getAttribute('data-report-btn')));
+      });
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-filter');
+          claims.forEach(card => {
+            const match = target === 'all' || card.getAttribute('data-claim-verdict') === target;
+            card.classList.toggle('hidden', !match);
+          });
+        });
+      });
+    })();
+  </script>
+
+
+</body></html>

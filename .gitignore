@@ -1,0 +1,11 @@
+/.venv/
+/.pnpm-store/
+.DS_Store
+__pycache__/
+*.py[cod]
+.env
+.env.*
+/frontend/dist/
+node_modules/
+/local-notes/
+/AGENTS.md
